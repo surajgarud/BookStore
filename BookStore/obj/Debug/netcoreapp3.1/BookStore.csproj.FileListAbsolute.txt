@@ -38,3 +38,11 @@ C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Swas
 C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\suraj\source\BookStore\BookStore\BookStore\obj\Debug\netcoreapp3.1\BookStore.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll

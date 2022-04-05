@@ -8,5 +8,6 @@ namespace RepositoryLayer.Interface
     public interface IUserRL
     {
         public UserRegistration Register(UserRegistration user);
+        public UserLogin Login(string EmailId, string Password);
     }
 }

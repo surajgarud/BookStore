@@ -39,5 +39,22 @@ namespace BookStore.Controllers
                 return this.BadRequest(new { Success = false, message = ex.Message });
             }
         }
+        [HttpPost("login")]
+        public IActionResult Login(string EmailId, string Password)
+        {
+            try
+            {
+                var result = this.userBL.Login(EmailId, Password);
+                if (result != null)
+                    return this.Ok(new { success = true, message = "Login Successful", data = result });
+                else
+                    return this.BadRequest(new { success = false, message = "Login UnSuccessful", data = result });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

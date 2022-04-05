@@ -1,10 +1,14 @@
 ﻿using CommonLayer.Model;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace RepositoryLayer.Service
 {
@@ -50,6 +54,71 @@ namespace RepositoryLayer.Service
             {
                 this.sqlConnection.Close();
             }
+        }
+        public UserLogin Login(string EmailId, string Password)
+        {
+            try
+            {
+                this.sqlConnection = new SqlConnection(this.Configuration["ConnectionString:BookStore"]);
+                SqlCommand com = new SqlCommand("Login", this.sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                com.Parameters.AddWithValue("@EmailId", EmailId);
+                com.Parameters.AddWithValue("@Password", Password);
+                this.sqlConnection.Open();
+                SqlDataReader rd = com.ExecuteReader();
+                if (rd.HasRows)
+                {
+                    UserLogin user = new UserLogin();
+                    while (rd.Read())
+                    {
+                        user.EmailId = Convert.ToString(rd["EmailId"] == DBNull.Value ? default : rd["EmailId"]);
+                        //user.UserId = Convert.ToInt32(rd["UserId"] == DBNull.Value ? default : rd["UserId"]);
+                        user.FullName = Convert.ToString(rd["FullName"] == DBNull.Value ? default : rd["FullName"]);
+                    }
+
+                    this.sqlConnection.Close();
+                    user.Token = this.GenerateJWTToken(user); 
+                    return user;
+                }
+                else
+                {
+                    this.sqlConnection.Close();
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                this.sqlConnection.Close();
+            }
+        }
+        public string GenerateJWTToken(UserLogin user)
+        {
+            // header
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Jwt:SecretKey"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            // payload
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Role, "User"),
+                new Claim("EmailId", user.EmailId),
+                new Claim("Id", user.UserId.ToString()),
+            };
+
+            // signature
+            var token = new JwtSecurityToken(
+                this.Configuration["Jwt:Issuer"],
+                this.Configuration["Jwt:Issuer"],
+                claims,
+                expires: DateTime.Now.AddMinutes(60),
+                signingCredentials: credentials);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 
