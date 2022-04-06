@@ -26,6 +26,18 @@ namespace BusinessLayer.Service
             }
         }
 
+        public bool DeleteBook(long BookId)
+        {
+            try
+            {
+                return this.bookRL.DeleteBook(BookId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public UpdateBook UpdateBook(UpdateBook update)
         {
             try
