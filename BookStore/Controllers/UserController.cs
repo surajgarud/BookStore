@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BookStore.Controllers
@@ -27,7 +28,7 @@ namespace BookStore.Controllers
                 var user = this.userBL.Register(Registration);
                 if (user != null)
                 {
-                    return this.Ok(new { Success = true, message = "User Added Sucessfully", Response = user });
+                    return this.Ok(new { Success = true, message = "User Added Sucessfully", });
                 }
                 else
                 {
@@ -37,6 +38,23 @@ namespace BookStore.Controllers
             catch (Exception ex)
             {
                 return this.BadRequest(new { Success = false, message = ex.Message });
+            }
+        }
+        [HttpPost("ForgetPassword")]
+        public IActionResult ForgotPassword(string EmailId)
+        {
+            try
+            {
+                var forgotPasswordToken = this.userBL.ForgotPassword(EmailId);
+                if (forgotPasswordToken != null)
+                    return this.Ok(new { Success = true, message = " Token Sent on Mail To Reset The Password", Response = forgotPasswordToken });
+                else
+                    return this.BadRequest(new { success = false, message = "Mail Sent UnSuccessful" });
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
         [HttpPost("login")]
@@ -56,5 +74,26 @@ namespace BookStore.Controllers
                 throw;
             }
         }
+        [HttpPut("ResetPassword")]
+        public IActionResult ResetPassword(string NewPassword, string ConfirmPassword)
+        {
+            try
+            {
+                var EmailId = User.Claims.FirstOrDefault(e => e.Type == "EmailId").Value.ToString();
+                if (this.userBL.ResetPassword(EmailId, NewPassword, ConfirmPassword))
+                {
+                    return this.Ok(new { Success = true, message = " Password Changed Sucessfully " });
+                }
+                else
+                {
+                    return this.BadRequest(new { Success = false, message = " Password Change Failed ! Try Again " });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(new { Success = false, message = ex.Message });
+            }
+        }
+
     }
 }

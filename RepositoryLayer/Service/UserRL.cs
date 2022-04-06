@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Model;
+using Microsoft.Exchange.WebServices.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Interface;
@@ -120,6 +121,108 @@ namespace RepositoryLayer.Service
                 signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-    }
+        public string ForgotPassword(string EmailId)
+        {
+            try
+            {
+                this.sqlConnection = new SqlConnection(this.Configuration["ConnectionString:BookStore"]);
+                SqlCommand com = new SqlCommand("ForgotPassword", this.sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                com.Parameters.AddWithValue("@EmailId", EmailId);
+                this.sqlConnection.Open();
+                SqlDataReader rd = com.ExecuteReader();
+                if (rd.HasRows)
+                {
+                    int UserId = 0;
+                    while (rd.Read())
+                    {
+                        EmailId = Convert.ToString(rd["EmailId"] == DBNull.Value ? default : rd["EmailId"]);
+                        UserId = Convert.ToInt32(rd["UserId"] == DBNull.Value ? default : rd["UserId"]);
+                    }
 
+                    this.sqlConnection.Close();
+                    var token = this.GenerateJWTTokenForPassword(EmailId, UserId);
+                    new MSMQModel().send(token);
+                    return token;
+                }
+                else
+                {
+                    this.sqlConnection.Close();
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                this.sqlConnection.Close();
+            }
+        }
+        public string GenerateJWTTokenForPassword(string EmailId, int UserId)
+        {
+            // header
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Jwt:SecretKey"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            // payload
+            var claims = new[]
+            {
+                new Claim("EmailId", EmailId),
+                new Claim("UserId", UserId.ToString()),
+            };
+
+            // signature
+            var token = new JwtSecurityToken(
+                this.Configuration["Jwt:Issuer"],
+                this.Configuration["Jwt:Issuer"],
+                claims,
+                expires: DateTime.Now.AddMinutes(60),
+                signingCredentials: credentials);
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        public bool ResetPassword(string EmailId, string NewPassword, string ConfirmPassword)
+        {
+            try
+            {
+                if (NewPassword == ConfirmPassword)
+                {
+                    this.sqlConnection = new SqlConnection(this.Configuration["ConnectionString:BookStore"]);
+                    SqlCommand com = new SqlCommand("ResetPassword", this.sqlConnection)
+                    {
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    com.Parameters.AddWithValue("@EmailId", EmailId);
+                    com.Parameters.AddWithValue("@Password", ConfirmPassword);
+                    this.sqlConnection.Open();
+                    int i = com.ExecuteNonQuery();
+                    this.sqlConnection.Close();
+                    if (i >= 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                this.sqlConnection.Close();
+            }
+        }
+    }
 }
+

@@ -16,6 +16,18 @@ namespace BusinessLayer.Service
             this.userRL = userRL;
         }
 
+        public string ForgotPassword(string EmailId)
+        {
+            try
+            {
+                return userRL.ForgotPassword(EmailId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public UserLogin Login(string EmailId, string Password)
         {
             try
@@ -36,6 +48,19 @@ namespace BusinessLayer.Service
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public bool ResetPassword(string EmailId, string NewPassword, string ConfirmPassword)
+        {
+            try
+            {
+                return userRL.ResetPassword(EmailId, NewPassword, ConfirmPassword);
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }
