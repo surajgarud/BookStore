@@ -63,19 +63,39 @@ namespace BookStore.Controllers
         {
             try
             {
-                var notes = this.bookBL.DeleteBook(BookId);
-                if (!notes)
+                var book = this.bookBL.DeleteBook(BookId);
+                if (!book)
                 {
                     return this.BadRequest(new { Success = false, message = "failed to Delete the Book" });
                 }
                 else
                 {
-                    return this.Ok(new { Success = true, message = " Book is Deleted successfully ", data = notes });
+                    return this.Ok(new { Success = true, message = " Book is Deleted successfully ", data = book });
                 }
             }
             catch (Exception)
             {
                 throw;
+            }
+        }
+        [HttpGet("{BookId}/Get")]
+        public IActionResult GetBookByBookId(long BookId)
+        {
+            try
+            {
+                var book = this.bookBL.GetBookByBookId(BookId);
+                if (book != null)
+                {
+                    return this.Ok(new { Success = true, message = "Book Detail Fetched Sucessfully", Response = book });
+                }
+                else
+                {
+                    return this.BadRequest(new { Success = false, message = "Enter Correct Book Id" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(new { Success = false, message = ex.Message });
             }
         }
     }
