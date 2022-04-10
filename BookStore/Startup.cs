@@ -35,6 +35,8 @@ namespace BookStore
             services.AddTransient<ICartRL, CartRL>();
             services.AddTransient<IAddressBL, AddressBL>();
             services.AddTransient<IAddressRL, AddressRL>();
+            services.AddTransient<IWishListBL, WishListBL>();
+            services.AddTransient<IWishListRL, WishListRL>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore", Version = "v1" });
