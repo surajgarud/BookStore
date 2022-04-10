@@ -71,12 +71,13 @@ namespace RepositoryLayer.Service
                 SqlDataReader rd = com.ExecuteReader();
                 if (rd.HasRows)
                 {
+                    int UserId = 0;
                     UserLogin user = new UserLogin();
                     while (rd.Read())
                     {
                         user.EmailId = Convert.ToString(rd["EmailId"] == DBNull.Value ? default : rd["EmailId"]);
-                        //user.UserId = Convert.ToInt32(rd["UserId"] == DBNull.Value ? default : rd["UserId"]);
-                        user.FullName = Convert.ToString(rd["FullName"] == DBNull.Value ? default : rd["FullName"]);
+                        user.UserId = Convert.ToInt32(rd["UserId"] == DBNull.Value ? default : rd["UserId"]);
+                        //user.FullName = Convert.ToString(rd["FullName"] == DBNull.Value ? default : rd["FullName"]);
                     }
 
                     this.sqlConnection.Close();
@@ -107,7 +108,7 @@ namespace RepositoryLayer.Service
             // payload
             var claims = new[]
             {
-                new Claim(ClaimTypes.Role, "User"),
+                //new Claim(ClaimTypes.Role, "User"),
                 new Claim("EmailId", user.EmailId),
                 new Claim("Id", user.UserId.ToString()),
             };
