@@ -41,5 +41,46 @@ namespace BookStore.Controllers
                 return this.BadRequest(new { Success = false, message = ex.Message });
             }
         }
+        [HttpDelete("Delete")]
+        public IActionResult DeleteFromWishlist(int wishlistId)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                if (this.wishListBL.DeleteFromWishlist(userId, wishlistId))
+                {
+                    return this.Ok(new { Status = true, Message = "Deleted From Wishlist" });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = "Some Error Occured" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(new { Success = false, message = ex.Message });
+            }
+        }
+        [HttpGet("{UserId}/ Get")]
+        public IActionResult GetCart()
+        {
+            try
+            {
+                int userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var wishData = this.wishListBL.GetAllFromWishlist(userId);
+                if (wishData != null)
+                {
+                    return this.Ok(new { success = true, message = "All Wishlist Data Fetched Successfully ", response = wishData });
+                }
+                else
+                {
+                    return this.BadRequest(new { Success = false, message = "User Id is Wrong" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(new { Success = false, response = ex.Message });
+            }
+        }
     }
 }

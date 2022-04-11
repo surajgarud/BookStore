@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Interface;
+using CommonLayer.Model;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,30 @@ namespace BusinessLayer.Service
             try
             {
                 return this.wishListRL.AddToWishlist(bookId, userId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool DeleteFromWishlist(int userId, int wishlistId)
+        {
+            try
+            {
+                return this.wishListRL.DeleteFromWishlist(userId, wishlistId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<WishListModel> GetAllFromWishlist(int userId)
+        {
+            try
+            {
+                return this.wishListRL.GetAllFromWishlist(userId);
             }
             catch (Exception)
             {
