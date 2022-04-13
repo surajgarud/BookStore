@@ -40,7 +40,7 @@ namespace BusinessLayer.Service
         }
 
         public List<AddressModel> GetAllAddress(int UserId)
-        {
+            {
             try
             {
                 return this.addressRL.GetAllAddress(UserId);

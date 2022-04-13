@@ -172,5 +172,53 @@ namespace RepositoryLayer.Service
                 this.sqlConnection.Close();
             }
         }
+        public List<BookModel> GetAllBooks()
+        {
+            try
+            {
+                List<BookModel> book = new List<BookModel>();
+                this.sqlConnection = new SqlConnection(this.Configuration["ConnectionString:Bookstore"]);
+                SqlCommand cmd = new SqlCommand("GetAllBook", this.sqlConnection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                this.sqlConnection.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        book.Add(new BookModel
+                        {
+                            BookId = Convert.ToInt32(reader["bookId"]),
+                            BookName = reader["bookName"].ToString(),
+                            AuthorName = reader["authorName"].ToString(),
+                            Rating = Convert.ToInt32(reader["rating"]),
+                            TotalView = Convert.ToInt32(reader["TotalView"]),
+                            DiscountedPrice = Convert.ToInt32(reader["DiscountedPrice"]),
+                            OriginalPrice = Convert.ToInt32(reader["originalPrice"]),
+                            BookDetails = reader["BookDetails"].ToString(),
+                            BookImage = reader["bookImage"].ToString(),
+                        });
+                    }
+
+                    this.sqlConnection.Close();
+                    return book;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                this.sqlConnection.Close();
+            }
+        }
     }
 }

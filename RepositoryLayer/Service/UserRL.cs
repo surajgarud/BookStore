@@ -71,7 +71,7 @@ namespace RepositoryLayer.Service
                 SqlDataReader rd = com.ExecuteReader();
                 if (rd.HasRows)
                 {
-                    int UserId = 0;
+                   //int UserId = 0;
                     UserLogin user = new UserLogin();
                     while (rd.Read())
                     {
@@ -108,7 +108,7 @@ namespace RepositoryLayer.Service
             // payload
             var claims = new[]
             {
-                //new Claim(ClaimTypes.Role, "User"),
+                new Claim(ClaimTypes.Role, "User"),
                 new Claim("EmailId", user.EmailId),
                 new Claim("Id", user.UserId.ToString()),
             };

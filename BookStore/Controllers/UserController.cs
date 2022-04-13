@@ -16,6 +16,8 @@ namespace BookStore.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserBL userBL;
+        const string SessionFullName = "FullName";
+        const string SessionEmailId = "EmailId";
         public UserController(IUserBL userBL)
         {
             this.userBL = userBL;
@@ -25,9 +27,13 @@ namespace BookStore.Controllers
         {
             try
             {
+                HttpContext.Session.SetString(SessionFullName, Registration.FullName);
+                HttpContext.Session.SetString(SessionEmailId, Registration.EmailId);
                 var user = this.userBL.Register(Registration);
                 if (user != null)
                 {
+                    var name = HttpContext.Session.GetString(SessionFullName);
+                    var emailid = HttpContext.Session.GetString(SessionEmailId);
                     return this.Ok(new { Success = true, message = "User Added Sucessfully", });
                 }
                 else
@@ -37,7 +43,7 @@ namespace BookStore.Controllers
             }
             catch (Exception ex)
             {
-                return this.BadRequest(new { Success = false, message = ex.Message });
+                return this.NotFound(new { Success = false, message = ex.Message });
             }
         }
         [HttpPost("ForgetPassword")]
@@ -51,10 +57,10 @@ namespace BookStore.Controllers
                 else
                     return this.BadRequest(new { success = false, message = "Mail Sent UnSuccessful" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return this.BadRequest(new { Success = false, message = ex.Message });
             }
         }
         [HttpPost("login")]
@@ -68,10 +74,10 @@ namespace BookStore.Controllers
                 else
                     return this.BadRequest(new { success = false, message = "Login UnSuccessful", data = result });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return this.BadRequest(new { Success = false, message = ex.Message });
             }
         }
         [HttpPut("ResetPassword")]

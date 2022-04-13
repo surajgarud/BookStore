@@ -77,3 +77,11 @@ C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\IKVM
 C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\IKVM.Runtime.dll
 C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Microsoft.Exchange.WebServices.Auth.dll
 C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Microsoft.Exchange.WebServices.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.StackExchangeRedis.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\Pipelines.Sockets.Unofficial.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\StackExchange.Redis.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\System.Diagnostics.PerformanceCounter.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\suraj\source\BookStore\BookStore\BookStore\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
